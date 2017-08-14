@@ -1,0 +1,20 @@
+{
+  "name": "microbit-ble-bridge",
+  "version": "0.0.2-dev01",
+  "description": "A BLE to USB Serial bridge for the micro:bit, using a micro:bit",
+  "licenses": [
+    {
+      "url": "https://spdx.org/licenses/Apache-2.0",
+      "type": "Apache-2.0"
+    }
+  ],
+  "dependencies": {
+      "mbed-classic": "~0.0.4",
+      "ble": "remay/BLE_API#master",
+      "ble-nrf51822": "remay/ble-nrf51822#master",
+      "microbit-dal":"remay/microbit-dal#master"
+  },
+  "targetDependencies": {},
+  "bin": "./source"
+}
+

@@ -1,0 +1,388 @@
+<html>
+<head>
+    <title>BBC micro:bit Button Demo</title>
+    <meta name="description" content="micro:bit Button Demo with Web Bluetooth.">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+
+    <script src="./web/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script src="./web/snap.svg-min.js"></script>
+
+    <!-- Polymer components -->
+    <link rel="import" href="./web/bower_components/paper-progress/paper-progress.html">
+    <link rel="import" href="./web/bower_components/paper-button/paper-button.html">
+    <link rel="import" href="./web/bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="./web/bower_components/iron-icons/image-icons.html">
+    <link rel="import" href="./web/bower_components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="./web/bower_components/paper-card/paper-card.html">
+    <link rel="import" href="./web/bower_components/paper-dialog/paper-dialog.html">
+    <link rel="import" href="./web/bower_components/paper-toggle-button/paper-toggle-button.html">
+    <link rel="import" href="./web/bower_components/iron-flex-layout/iron-flex-layout.html">
+
+    <link rel="import" href="./web/bower_components/paper-dialog/paper-dialog.html">
+    <link rel="import" href="./web/bower_components/paper-button/paper-button.html">
+    <link rel="import" href="./web/bower_components/paper-input/paper-input.html">
+
+    <link rel="import" href="./web/bower_components/paper-styles/color.html">
+    <link rel="stylesheet" href="./web/bower_components/paper-styles/demo.css">
+    <link rel="stylesheet" href="./web/style.css">
+
+    <style is="custom-style">
+        body {
+            background-color: var(--paper-grey-50);
+        }
+
+        paper-progress {
+            width: 100%;
+        }
+
+        paper-progress.blue {
+            paper-progress-active-color: var(--paper-light-blue-500);
+            paper-progress-secondary-color: var(--paper-light-blue-100);
+        }
+
+        paper-toggle-button.blue {
+            --paper-toggle-button-checked-bar-color: var(--paper-light-blue-500);
+            --paper-toggle-button-checked-button-color: var(--paper-light-blue-500);
+            --paper-toggle-button-checked-ink-color: var(--paper-light-blue-500);
+            --paper-toggle-button-unchecked-bar-color: var(--paper-light-blue-900);
+            --paper-toggle-button-unchecked-button-color: var(--paper-light-blue-900);
+            --paper-toggle-button-unchecked-ink-color: var(--paper-light-blue-900);
+        }
+
+        paper-button {
+            display: block;
+            width: 80px;
+            height: 40px;
+            min-width: 0em;
+            margin: 0.2em 0.2em;
+        }
+
+        paper-button.blue {
+            color: var(--paper-light-blue-500);
+            paper-button-flat-focus-color: var(--paper-light-blue-50);
+        }
+
+        #cards {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 400px;
+        }
+
+        paper-card {
+            margin-bottom: 5px;
+            margin-top: 5px;
+            width: 100%;
+        }
+
+        .flex {
+            @apply(--layout-horizontal);
+        }
+
+        paper-button.indigo {
+            background-color: var(--paper-indigo-500);
+            color: white;
+            --paper-button-raised-keyboard-focus: {
+                background-color: var(--paper-pink-a200) !important;
+                color: white !important;
+            }
+            ;
+        }
+    </style>
+</head>
+
+<body unresolved>
+    <template id="template" is="dom-bind">
+      <div id="cards">
+        <paper-card heading="BBC micro:bit Button Demo">
+          <div class="card-content">
+            <paper-toggle-button class="blue" id="connect">Connect</paper-toggle-button>
+            <paper-progress id="progress" indeterminate></paper-progress>
+          </div>
+        </paper-card>
+
+
+
+        <paper-dialog id="no-bluetooth">
+          <h2>No Web Bluetooth</h2>
+          <p>The Web Bluetooth API is missing. Please enable it at
+          chrome://flags/#enable-web-bluetooth and try again.</p>
+        </paper-dialog>
+
+        <paper-dialog id="errorDialog">
+          <h2>Error</h2>
+          <p>Could not connect to bluetooth device!</p>
+        </paper-dialog>
+      </div>
+    </template>
+
+    <svg version="1.1" id="crocodile" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="312px" height="300px" viewBox="0 0 260 250" enable-background="new 0 0 260 250" xml:space="preserve">
+            <g>
+                <path id="symbol" opacity="0.2" fill="#848383" enable-background="new    " d="M185.631,140.915l5.02,10.86l8.145-3.765
+                    l-5.02-10.86L185.631,140.915z M246.828,109.341l-47.613,25.306l5.02,10.86l50.123-19.876L246.828,109.341z"/>
+                <g id="head">
+                    <polygon fill="#09B39C" points="44.613,146.703 26.665,140.721 8.718,146.703 -0.252,146.703 -0.252,206.523 44.613,206.523 
+                        119.387,206.523 119.387,167.64      "/>
+                    <polygon opacity="0.2" fill="#FFFFFF" enable-background="new    " points="-0.252,146.703 11.712,170.631 26.667,140.721 
+                        8.721,146.703       "/>
+                    <polyline opacity="0.2" fill="#FFFFFF" enable-background="new    " points="8.718,146.703 20.685,152.685 26.665,140.721      "/>
+                    <polygon opacity="0.2" fill="#FFFFFF" enable-background="new    " points="44.613,146.703 53.613,163.667 17.694,143.712 
+                        26.667,140.721      "/>
+                </g>
+                <g id="upper-head">
+                    <g id="upper-jaw">
+                        <g>
+                            <path id="upper-teeth" fill="#E0CAB1" d="M151.174,129.382l14.913,6.086l-6.602-14.691L151.174,129.382z M138.707,142.292
+                                l14.914,6.086l-6.603-14.692L138.707,142.292z M126.241,155.201l14.913,6.086l-6.602-14.692L126.241,155.201z M163.64,116.474
+                                l14.913,6.085l-6.603-14.692L163.64,116.474z M176.106,103.564l14.913,6.086l-6.602-14.692L176.106,103.564z M188.572,90.655
+                                l14.914,6.085l-6.602-14.691L188.572,90.655z M201.039,77.746l14.913,6.085L209.35,69.14L201.039,77.746z M221.816,56.23
+                                l-8.311,8.607l14.913,6.085L221.816,56.23z"/>
+                            <path opacity="0.4" fill="#FFFFFF" enable-background="new    " d="M155.329,125.08l10.758,10.388l-6.602-14.691L155.329,125.08
+                                z M142.863,137.989l10.758,10.389l-6.603-14.692L142.863,137.989z M130.396,150.898l10.758,10.389l-6.602-14.692
+                                L130.396,150.898z M167.796,112.171l10.757,10.388l-6.603-14.692L167.796,112.171z M180.261,99.261l10.758,10.389l-6.602-14.692
+                                L180.261,99.261z M192.728,86.352l10.758,10.388l-6.602-14.691L192.728,86.352z M205.195,73.443l10.757,10.388L209.35,69.14
+                                L205.195,73.443z M221.816,56.23l-4.156,4.303l10.758,10.389L221.816,56.23z"/>
+                        </g>
+                        <polygon fill="#09B39C" points="215.135,33 200.18,33 197.189,46.955 92,125 88.355,171.706 106.387,180.64 236.072,47.955             
+                            "/>
+                        <polygon opacity="0.2" fill="#FFFFFF" enable-background="new    " points="92,125 97.423,150.703 197.189,46.955          "/>
+                        <line opacity="0.2" fill="#FFFFFF" enable-background="new    " x1="197.189" y1="46.955" x2="92" y2="125"/>
+                        <polygon opacity="0.2" fill="#FFFFFF" enable-background="new    " points="200.18,33 236.072,47.955 215.135,33           "/>
+                        <polygon opacity="0.2" fill="#FFFFFF" enable-background="new    " points="197.189,46.955 215.135,33 200.18,33           "/>
+                    </g>
+                    <polygon fill="#09B39C" points="92,125 65.55,126.757 44.613,146.703 44.613,176.523 119.387,176.523 119.387,167.64 
+                        107.897,156.377         "/>
+                    <polygon opacity="0.2" fill="#FFFFFF" enable-background="new    " points="92,125 102.423,145.703 65.55,126.757      "/>
+                    <polygon opacity="0.2" fill="#FFFFFF" enable-background="new    " points="44.613,146.703 102.423,145.703 92,125 65.55,126.757 
+                                "/>
+                    <polygon id="eye_1_" fill="#FFFFFF" points="71.532,145.703 83.495,139.721 95.459,145.703 80.505,154.676         "/>
+                    <polygon opacity="0.2" fill="#FFFFFF" enable-background="new    " points="44.613,146.703 44.613,158.667 92,125 65.55,126.757 
+                                "/>
+                </g>
+                <g id="bottom-jaw">
+                    <g>
+                        <polygon fill="#E0CAB1" points="152.531,185.586 158.513,170.631 164.495,185.586             "/>
+                        <polygon opacity="0.4" fill="#FFFFFF" enable-background="new    " points="164.495,185.586 158.513,170.631 158.513,185.586           
+                            "/>
+                    </g>
+                    <g>
+                        <polygon fill="#E0CAB1" points="170.477,185.586 176.459,170.631 182.441,185.586             "/>
+                        <polygon opacity="0.4" fill="#FFFFFF" enable-background="new    " points="182.441,185.586 176.459,170.631 176.459,185.586           
+                            "/>
+                    </g>
+                    <g>
+                        <polygon fill="#E0CAB1" points="188.423,185.586 194.405,170.631 200.387,185.586             "/>
+                        <polygon opacity="0.4" fill="#FFFFFF" enable-background="new    " points="200.387,185.586 194.405,170.631 194.405,185.586           
+                            "/>
+                    </g>
+                    <g>
+                        <polygon fill="#E0CAB1" points="206.369,185.586 212.351,170.631 218.333,185.586             "/>
+                        <polygon opacity="0.4" fill="#FFFFFF" enable-background="new    " points="218.333,185.586 212.351,170.631 212.351,185.586           
+                            "/>
+                    </g>
+                    <g>
+                        <polygon fill="#E0CAB1" points="224.315,185.586 230.297,170.631 236.279,185.586             "/>
+                        <polygon opacity="0.4" fill="#FFFFFF" enable-background="new    " points="236.279,185.586 230.297,170.631 230.297,185.586           
+                            "/>
+                    </g>
+                    <polygon fill="#E0CAB1" points="148.54,179.604 119.596,167.64 109.657,167.64 103.675,167.64 91.711,167.64 79.747,179.604 
+                        0,200.541 0,206.523 79.747,206.523 156.522,206.523 187.432,198.55 235.288,189.577 244.252,179.604       "/>
+                    <polygon opacity="0.3" fill="#FFFFFF" enable-background="new    " points="119.594,167.64 91.711,167.64 79.747,179.604       "/>
+                    <polygon opacity="0.3" fill="#FFFFFF" enable-background="new    " points="91.711,167.64 79.747,206.523 79.747,179.604       "/>
+                    <polygon opacity="0.1" fill="#534741" enable-background="new    " points="235.288,189.577 160.513,195.559 115.639,206.523 
+                        156.522,206.523 187.432,198.55      "/>
+                    <polygon opacity="0.1" fill="#534741" enable-background="new    " points="187.432,198.55 160.513,195.559 156.522,206.523 
+                        156.522,206.523         "/>
+                    <polygon opacity="0.3" fill="#FFFFFF" enable-background="new    " points="0,200.541 46.847,194.559 79.747,179.604       "/>
+                </g>
+            </g>
+        </svg>
+
+    <script>
+        'use strict';
+        document.addEventListener('WebComponentsReady', () => {
+
+            let croc = Snap.select("#crocodile"),
+                head = croc.select("#upper-head"),
+                jaw = croc.select("#upper-jaw"),
+                symbol = croc.select("#symbol"),
+                timer;
+
+            let pivots = [
+                [44, 147],
+                [92, 126]
+            ];
+
+            function close() {
+                clearTimeout(timer);
+
+                head.animate({
+                    transform: "r" + [8, pivots[0]]
+                }, 500, mina.backin);
+
+                jaw.animate({
+                    transform: "r" + [37, pivots[1]]
+                }, 500, mina.backin);
+
+                timer = setTimeout(function() {
+                    symbol.animate({
+                        transform: "t-70,40r40"
+                    }, 100);
+                }, 400);
+            }
+
+            function open() {
+                clearTimeout(timer);
+
+                head.animate({
+                    transform: "r" + [0, pivots[0]]
+                }, 700, mina.elastic);
+
+                jaw.animate({
+                    transform: "r" + [0, pivots[1]]
+                }, 700, mina.elastic);
+
+                symbol.animate({
+                    transform: "t0,0r0"
+                }, 500, mina.elastic);
+            }
+
+            timer = setTimeout(close, 50);
+
+
+            let connectToggle = document.querySelector('#connect');
+            let progress = document.querySelector('#progress');
+            let dialog = document.querySelector('#errorDialog');
+
+            let gattServer;
+            let commandService;
+            let characteristic;
+            
+            let busy = false;
+
+            progress.hidden = true;
+
+            /**
+             * Check if browser supports Web Bluetooth API.
+             */
+            if (navigator.bluetooth == undefined) {
+                document.getElementById("no-bluetooth").style.display = "block";
+                document.getElementById("no-bluetooth").open();
+            }
+
+
+            /**
+             * Reset the app variable states.
+             */
+            function resetVariables() {
+                busy = false;
+                progress.hidden = true;
+                gattServer = null;
+                commandService = null;
+                characteristic = null;
+                
+                connectToggle.checked = false;
+            }
+
+            /**
+             * API error handler.
+             */
+            function handleError(error) {
+                console.log(error);
+                resetVariables();
+                dialog.open();
+            }
+
+
+        
+            function handleCharacteristicValueChanged1(event) {
+                console.log("Button A");
+                open();
+            }
+
+            function handleCharacteristicValueChanged2(event) {
+                console.log("Button B");
+                close();
+            }
+
+
+            /**
+             * Connect to command characteristic.
+             */
+            connectToggle.addEventListener('click', () => {
+                if (gattServer != null && gattServer.connected) {
+                    if (gattServer.disconnect) {
+                        console.log('Disconnecting...');
+                        gattServer.disconnect();
+                    }
+                    resetVariables();
+                } else {
+                    console.log('Connecting...');
+                    connectToggle.checked = true;
+                    progress.hidden = false;
+                    if (characteristic == null) {
+                        navigator.bluetooth.requestDevice({
+                                filters: [{
+                                    namePrefix: 'BBC micro:bit',
+                                }],
+                                optionalServices: ['e95d9882-251d-470a-a062-fa1922dfa9a8'] //BUTTONSERVICE_SERVICE_UUID
+                            })
+                            .then(device => {
+                                console.log('Connecting to GATT Server...');
+                                return device.gatt.connect();
+                            })
+                            .then(server => {
+                                console.log('> Found GATT server');
+                                gattServer = server;
+                                // Get command service
+                                return gattServer.getPrimaryService('e95d9882-251d-470a-a062-fa1922dfa9a8'); //BUTTONSERVICE_SERVICE_UUID
+                            })
+                            .then(service => {
+                                console.log('> Found command service Button A');
+                                commandService = service;
+                                return commandService.getCharacteristic('e95dda90-251d-470a-a062-fa1922dfa9a8'); //BUTTON1STATE_CHARACTERISTIC_UUID
+                            })
+                            .then(characteristic => {
+                                console.log('> Found write characteristic - Start Notification Button 1');
+
+                                return characteristic.startNotifications().then(_ => {
+                                  console.log('> Notifications started');
+                                  characteristic.addEventListener('characteristicvaluechanged',
+                                      handleCharacteristicValueChanged1);
+                                });
+                            })
+                            
+                            .then(service => {
+                                console.log('> Found command service Button B');
+                                return commandService.getCharacteristic('e95dda91-251d-470a-a062-fa1922dfa9a8'); //BUTTON2STATE_CHARACTERISTIC_UUID
+                            })
+                            .then(characteristic2 => {
+                                console.log('> Found write characteristic - Start Notification Button 2');
+
+                                return characteristic2.startNotifications().then(_ => {
+                                  console.log('> Notifications started');
+                                  characteristic2.addEventListener('characteristicvaluechanged',
+                                      handleCharacteristicValueChanged2);
+                                      progress.hidden = true;
+                                });
+                                progress.hidden = true;
+                            })
+                            
+                            .catch(handleError);
+                    } else {
+                        progress.hidden = true;
+                    }
+                }
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>

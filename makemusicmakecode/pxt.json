@@ -1,0 +1,17 @@
+{
+    "name": "Beats",
+    "version": "0.0.1",
+    "description": "Plays beats",
+    "license": "MIT",
+    "dependencies": {
+        "microbit": "*"
+    },
+    "files": [
+        "README.md",
+        "Sequence.ts",
+        "SequenceSet.ts"
+    ],
+    "testFiles": [
+    ],
+    "public": true
+}

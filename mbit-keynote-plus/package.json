@@ -1,0 +1,26 @@
+{
+  "name": "mbit-keynote-plus",
+  "version": "0.0.1",
+  "description": "Control your Keynote presentation with the buttons of your micro:bit and predefine gestures.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rhumbertgz/mbit-keynote-plus.git"
+  },
+  "keywords": [
+    "micro:bit",
+    "microbit",
+    "keynote"
+  ],
+  "author": "Humberto Rodriguez Avila <rhumbertgz@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rhumbertgz/mbit-keynote-plus.git/issues"
+  },
+  "homepage": "https://github.com/rhumbertgz/mbit-keynote-plus.git",
+  "dependencies": {
+    "applescript": "1.0.0",
+    "bbc-microbit": "0.1.0",
+    "time": "^0.11.4"
+  }
+}

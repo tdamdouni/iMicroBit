@@ -1,0 +1,36 @@
+html {
+    overflow: hidden;
+}
+
+body {
+    background: #eee;
+    text-align: center;
+}
+
+svg {
+    display: inline-block;
+}
+
+iframe {
+    display: inline-block;
+    border: none;
+    height: 300px;
+    width: 400px;
+    margin: 10px;
+}
+
+@media all and (max-width:900px) { 
+    iframe {
+        width: 360px;
+        height: 270px;
+        margin: 0;
+    }
+}
+
+@media all and (max-width:800px) { 
+    iframe {
+        width: 340px;
+        height: 260px;
+        margin: 0;
+    }
+}

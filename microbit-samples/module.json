@@ -1,0 +1,11 @@
+{
+  "name": "microbit-samples",
+  "version": "2.0.0-rc9",
+  "description": "The micro:bit runtime common abstraction with examples.",
+  "license": "MIT",
+  "dependencies": {
+    "microbit": "lancaster-university/microbit"
+  },
+  "targetDependencies": {},
+  "bin": "./source"
+}

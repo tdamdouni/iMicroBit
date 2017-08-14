@@ -1,0 +1,12 @@
+- name: micro:bit
+  img: micro-bit
+- name: USB-A to micro USB-B
+  img: usb-microusb
+- name: 47‎Ω Resistor
+  img: resistor-47r
+- name: Female to Female Jumper Lead
+  img: jumper-female-to-female
+- name: Crocodile clips and wire
+  img: crocodile-clips
+- name: LED
+  img: led

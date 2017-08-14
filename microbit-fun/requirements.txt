@@ -1,0 +1,2 @@
+microfs==1.1.2
+uflash==1.0.5

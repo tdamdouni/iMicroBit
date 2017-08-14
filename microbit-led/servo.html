@@ -1,0 +1,342 @@
+<html>
+  <head>
+    <title>BBC micro:bit Servo Demo</title>
+    <meta name="description" content="BBC micro:bit Servo Demo">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+
+    <script src="./web/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="jquery.simplemodal.1.4.4.min.js"></script>
+
+    <!-- Polymer components -->
+    <link rel="import" href="./web/bower_components/paper-progress/paper-progress.html">
+    <link rel="import" href="./web/bower_components/paper-button/paper-button.html">
+    <link rel="import" href="./web/bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="./web/bower_components/iron-icons/image-icons.html">
+    <link rel="import" href="./web/bower_components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="./web/bower_components/paper-card/paper-card.html">
+    <link rel="import" href="./web/bower_components/paper-dialog/paper-dialog.html">
+    <link rel="import" href="./web/bower_components/paper-toggle-button/paper-toggle-button.html">
+    <link rel="import" href="./web/bower_components/iron-flex-layout/iron-flex-layout.html">
+
+    <link rel="import" href="./web/bower_components/paper-dialog/paper-dialog.html">
+    <link rel="import" href="./web/bower_components/paper-button/paper-button.html">
+    <link rel="import" href="./web/bower_components/paper-input/paper-input.html">
+
+    <!-- https://github.com/David-Mulder/paper-color-picker -->
+    <!--link rel="import" href="bower_components/paper-color-picker/paper-color-picker.html"-->
+
+    <link rel="import" href="./web/bower_components/paper-styles/color.html">
+    <link rel="stylesheet" href="./web/bower_components/paper-styles/demo.css">
+
+    <style is="custom-style">
+      body {
+        background-color: var(--paper-grey-50);
+      }
+      paper-progress {
+        width: 100%;
+      }
+      paper-progress.blue {
+        paper-progress-active-color: var(--paper-light-blue-500);
+        paper-progress-secondary-color: var(--paper-light-blue-100);
+      }
+      paper-toggle-button.blue {
+        --paper-toggle-button-checked-bar-color:  var(--paper-light-blue-500);
+        --paper-toggle-button-checked-button-color:  var(--paper-light-blue-500);
+        --paper-toggle-button-checked-ink-color: var(--paper-light-blue-500);
+        --paper-toggle-button-unchecked-bar-color:  var(--paper-light-blue-900);
+        --paper-toggle-button-unchecked-button-color:  var(--paper-light-blue-900);
+        --paper-toggle-button-unchecked-ink-color: var(--paper-light-blue-900);
+      }
+      paper-button {
+        display: block;
+        width: 140px;
+        height: 40px;
+        min-width: 0em;
+        margin: 0.2em 0.2em;
+      }
+      paper-button.blue {
+        color: var(--paper-light-blue-500);
+        paper-button-flat-focus-color: var(--paper-light-blue-50);
+      }
+      #cards {
+          margin-left: auto;
+          margin-right: auto;
+          max-width: 400px;
+      }
+      paper-card {
+        margin-bottom: 5px;
+        margin-top: 5px;
+        width: 100%;
+      }
+      .flex {
+        @apply(--layout-horizontal);
+      }
+      paper-button.indigo {
+        background-color: var(--paper-indigo-500);
+        color: white;
+        --paper-button-raised-keyboard-focus: {
+          background-color: var(--paper-pink-a200) !important;
+          color: white !important;
+        };
+      }
+    </style>
+  </head>
+  <body unresolved>
+    <template id="template" is="dom-bind">
+      <div id="cards">
+        <paper-card heading="BBC micro:bit Servo Demo">
+          <div class="card-content">
+            <paper-toggle-button class="blue" id="connect">Connect</paper-toggle-button>
+            <paper-progress id="progress" indeterminate></paper-progress>
+          </div>
+        </paper-card>
+
+
+        <paper-card id="colors">
+          <div class="card-content">
+            <div class="container flex">
+              <paper-button raised class="indigo" id="L">Left</paper-button>
+              <paper-button raised class="indigo" id="R">Right</paper-button>
+            </div>
+          </div>
+        </paper-card>
+
+     
+        <paper-dialog id="no-bluetooth">
+          <h2>No Web Bluetooth</h2>
+          <p>The Web Bluetooth API is missing. Please enable it at
+          chrome://flags/#enable-web-bluetooth and try again.</p>
+        </paper-dialog>
+
+        <paper-dialog id="errorDialog">
+          <h2>Error</h2>
+          <p>Could not connect to bluetooth device!</p>
+        </paper-dialog>
+      </div>
+    </template>
+
+    <script>
+      'use strict';
+      document.addEventListener('WebComponentsReady', () => {
+        let connectToggle = document.querySelector('#connect');
+        let progress = document.querySelector('#progress');
+        let dialog = document.querySelector('#errorDialog');
+
+        let gattServer;
+        let commandService;
+        let writeCharacteristic;
+        let writeClientReqCharacteristic;
+        let writeClientEvtCharacteristic;
+        let busy = false;
+        let commandQueue = [];
+
+        progress.hidden = true;
+
+        let buttonL = document.querySelector('#L');
+        buttonL.addEventListener('click', buttonClick);
+        let buttonR = document.querySelector('#R');
+        buttonR.addEventListener('click', buttonClick);
+
+
+        function buttonClick(e) {
+        	//if (writeCharacteristic) {
+	            let cmd = Polymer.dom(e).localTarget.id;
+    			console.log(cmd);
+
+            
+	            let bytes = []; // char codes
+			    let sbyte;
+			    let cmd1;
+			    let code;
+
+			    for (let i = 0; i < cmd.length; ++i) {
+			    	code = cmd.charCodeAt(i);
+			       	bytes = bytes.concat([code]);
+			    }
+
+			    for (let j = 0; j < bytes.length; j++) {
+			       	sbyte = bytes[j];
+			       	console.log(sbyte);
+			       	cmd1 = new Uint16Array([0x22B8, sbyte]);
+			       	sendCommand(cmd1);
+			    }
+			    
+	            
+	        //}
+        }
+
+        function sendCommand(cmd) {
+        	if (writeClientEvtCharacteristic) {
+            // Handle one command at a time
+            if (busy) {
+              // Queue commands
+              commandQueue.push(cmd);
+              return Promise.resolve();
+            }
+            busy = true;
+  
+
+	        return writeClientEvtCharacteristic.writeValue(cmd).then(() => {
+	              busy = false;
+	              // Get next command from queue
+	              let nextCommand = commandQueue.shift();
+	              if (nextCommand) {
+	                sendCommand(nextCommand);
+	              }
+	        });
+	        
+
+          } else {
+            return Promise.resolve();
+          }
+        }
+
+        /**
+         * Check if browser supports Web Bluetooth API.
+         */
+        if (navigator.bluetooth == undefined) {
+          document.getElementById("no-bluetooth").style.display = "block";
+          document.getElementById("no-bluetooth").open();
+        }
+
+        /**
+         * Reset the app variable states.
+         */
+        function resetVariables() {
+          busy = false;
+          progress.hidden = true;
+          gattServer = null;
+          commandService = null;
+          writeCharacteristic = null;
+          writeClientReqCharacteristic = null;
+          writeClientEvtCharacteristic = null;
+          connectToggle.checked = false;
+
+        }
+
+        /**
+         * API error handler.
+         */
+        function handleError(error) {
+          console.log(error);
+          resetVariables();
+          dialog.open();
+        }
+
+
+        function initEvent() {
+        	 let cmdPinAd = new Uint16Array([0x22B8, 0x00]);
+              sendEvent(cmdPinAd).then(() => {
+                  console.log('Event set.');
+               }).catch(handleError);
+        }
+
+        function sendEvent(cmd) {
+          if (writeClientReqCharacteristic) {
+            // Handle one command at a time
+            if (busy) {
+              // Queue commands
+              commandQueueP.push(cmd);
+              return Promise.resolve();
+            }
+            busy = true;
+            return writeClientReqCharacteristic.writeValue(cmd).then(() => {
+              busy = false;
+              // Get next command from queue
+              let nextCommand = commandQueue.shift();
+              if (nextCommand) {
+                sendEvent(nextCommand);
+              }
+            });
+          } else {
+            return Promise.resolve();
+          }
+        }
+
+        function handleCharacteristicValueChanged(event) {
+    		var value = event.target.value;
+    		  
+    		  let a = [];
+    		  // Convert raw data bytes to hex values just for the sake of showing something.
+    		  // In the "real" world, you'd use data.getUint8, data.getUint16 or even
+    		  // TextDecoder to process raw data bytes.
+    		  for (let i = 0; i < value.byteLength; i++) {
+    		    a.push('0x' + ('00' + value.getUint8(i).toString(16)).slice(-2));
+    		  }
+    		  console.log('> ' + a.join(' '));
+
+    	}
+                                
+        /**
+         * Connect to command characteristic.
+         */
+        connectToggle.addEventListener('click', () => {
+          if (gattServer != null && gattServer.connected) {
+            if (gattServer.disconnect) {
+              console.log('Disconnecting...');
+              gattServer.disconnect();
+            }
+            resetVariables();
+          } else {
+            console.log('Connecting...');
+            progress.hidden = false;
+            if (writeCharacteristic == null) {
+              navigator.bluetooth.requestDevice({
+                filters: [{
+                  namePrefix: 'BBC micro:bit',
+                }],
+                optionalServices: ['e95d93af-251d-470a-a062-fa1922dfa9a8'] //EVENTSERVICE_SERVICE_UUID
+              })
+              .then(device => {
+                console.log('Connecting to GATT Server...');
+                return device.gatt.connect();
+              })
+              .then(server => {
+                console.log('> Found GATT server');
+                gattServer = server;
+                //console.log(gattServer);
+                // Get command service
+                return gattServer.getPrimaryService('e95d93af-251d-470a-a062-fa1922dfa9a8'); //EVENTSERVICE_SERVICE_UUID
+              })
+              .then(service => {
+                console.log('> Found command service');
+                commandService = service;
+                return commandService.getCharacteristic('e95d9775-251d-470a-a062-fa1922dfa9a8'); //MICROBITEVENT_CHARACTERISTIC_UUID
+              })
+               .then(characteristic=> {
+                console.log('> Found write characteristic');
+                writeCharacteristic = characteristic;
+                writeCharacteristic.startNotifications();
+                writeCharacteristic.addEventListener('characteristicvaluechanged',handleCharacteristicValueChanged);	
+                return commandService.getCharacteristic('e95d5404-251d-470a-a062-fa1922dfa9a8'); //CLIENTEVENT_CHARACTERISTIC_UUID
+              })
+              .then(ClientEvtCharacteristic => {
+              	console.log('> Found Client Event ClientEvtCharacteristic');
+              	writeClientEvtCharacteristic = ClientEvtCharacteristic;
+              	return commandService.getCharacteristic('e95d23c4-251d-470a-a062-fa1922dfa9a8'); //CLIENTREQUIREMENTS_CHARACTERISTIC_UUID
+              })
+              .then(ClientReqCharacteristic => {
+              	console.log('> Found Client Requirement characteristic');
+              	writeClientReqCharacteristic = ClientReqCharacteristic;
+              	initEvent();
+                progress.hidden = true;
+              })
+              
+              .catch(handleError);
+            } else {
+              progress.hidden = true;
+            }
+          }
+        });
+      });
+    </script>
+  
+
+</body></html>

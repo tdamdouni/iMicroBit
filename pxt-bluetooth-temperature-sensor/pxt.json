@@ -1,0 +1,22 @@
+{
+    "name": "bluetooth-temperature-sensor",
+    "version": "0.0.10",
+    "description": "A Bluetooth service to expose a temperature reading.",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*",
+        "bluetooth": "*"
+    },
+    "files": [
+        "README.md",
+        "extension.cpp",
+        "TemperatureSensorService.cpp",
+        "TemperatureSensorService.h",
+        "shims.d.ts",
+        "enums.d.ts"
+    ],
+    "testFiles": [
+        "tests.ts"
+    ],
+    "public": true
+}

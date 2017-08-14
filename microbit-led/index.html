@@ -1,0 +1,341 @@
+
+<!doctype html>
+<!--
+Copyright 2016 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<html>
+  <head>
+    <title>BBC micro:bit LED Display</title>
+    <meta name="description" content="Light up an LED Display with Web Bluetooth.">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+
+    <script src="./web/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+
+    <!-- Polymer components -->
+    <link rel="import" href="./web/bower_components/paper-progress/paper-progress.html">
+    <link rel="import" href="./web/bower_components/paper-button/paper-button.html">
+    <link rel="import" href="./web/bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="./web/bower_components/iron-icons/image-icons.html">
+    <link rel="import" href="./web/bower_components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="./web/bower_components/paper-card/paper-card.html">
+    <link rel="import" href="./web/bower_components/paper-dialog/paper-dialog.html">
+    <link rel="import" href="./web/bower_components/paper-toggle-button/paper-toggle-button.html">
+    <link rel="import" href="./web/bower_components/iron-flex-layout/iron-flex-layout.html">
+
+    <link rel="import" href="./web/bower_components/paper-dialog/paper-dialog.html">
+    <link rel="import" href="./web/bower_components/paper-button/paper-button.html">
+    <link rel="import" href="./web/bower_components/paper-input/paper-input.html">
+
+    <!-- https://github.com/David-Mulder/paper-color-picker -->
+    <!--link rel="import" href="bower_components/paper-color-picker/paper-color-picker.html"-->
+
+    <link rel="import" href="./web/bower_components/paper-styles/color.html">
+    <link rel="stylesheet" href="./web/bower_components/paper-styles/demo.css">
+
+    <style is="custom-style">
+      body {
+        background-color: var(--paper-grey-50);
+      }
+      paper-progress {
+        width: 100%;
+      }
+      paper-progress.blue {
+        paper-progress-active-color: var(--paper-light-blue-500);
+        paper-progress-secondary-color: var(--paper-light-blue-100);
+      }
+      paper-toggle-button.blue {
+        --paper-toggle-button-checked-bar-color:  var(--paper-light-blue-500);
+        --paper-toggle-button-checked-button-color:  var(--paper-light-blue-500);
+        --paper-toggle-button-checked-ink-color: var(--paper-light-blue-500);
+        --paper-toggle-button-unchecked-bar-color:  var(--paper-light-blue-900);
+        --paper-toggle-button-unchecked-button-color:  var(--paper-light-blue-900);
+        --paper-toggle-button-unchecked-ink-color: var(--paper-light-blue-900);
+      }
+      paper-button {
+        display: block;
+        width: 80px;
+        height: 40px;
+        min-width: 0em;
+        margin: 0.2em 0.2em;
+      }
+      paper-button.blue {
+        color: var(--paper-light-blue-500);
+        paper-button-flat-focus-color: var(--paper-light-blue-50);
+      }
+      #cards {
+          margin-left: auto;
+          margin-right: auto;
+          max-width: 400px;
+      }
+      paper-card {
+        margin-bottom: 5px;
+        margin-top: 5px;
+        width: 100%;
+      }
+      .flex {
+        @apply(--layout-horizontal);
+      }
+      paper-button.indigo {
+        background-color: var(--paper-indigo-500);
+        color: white;
+        --paper-button-raised-keyboard-focus: {
+          background-color: var(--paper-pink-a200) !important;
+          color: white !important;
+        };
+      }
+    </style>
+  </head>
+  <body unresolved>
+    <template id="template" is="dom-bind">
+      <div id="cards">
+        <paper-card heading="BBC micro:bit LED Display">
+          <div class="card-content">
+            <paper-toggle-button class="blue" id="connect">Connect</paper-toggle-button>
+            <paper-progress id="progress" indeterminate></paper-progress>
+          </div>
+        </paper-card>
+
+        <paper-card id="panel">
+          <div class="card-content">
+            <div class="container flex">
+              <paper-input always-float-label label="Message" id="txtmsg"></paper-input>
+            </div>
+          </div>
+        </paper-card>
+
+        <paper-card id="colors">
+          <div class="card-content">
+            <div class="container flex">
+              <paper-button raised class="indigo" id="buttonsend">Send</paper-button>
+            </div>
+          </div>
+        </paper-card>
+
+        <paper-color-picker id="picker"></paper-color-picker>
+
+        <paper-dialog id="no-bluetooth">
+          <h2>No Web Bluetooth</h2>
+          <p>The Web Bluetooth API is missing. Please enable it at
+          chrome://flags/#enable-web-bluetooth and try again.</p>
+        </paper-dialog>
+
+        <paper-dialog id="errorDialog">
+          <h2>Error</h2>
+          <p>Could not connect to bluetooth device!</p>
+        </paper-dialog>
+      </div>
+    </template>
+
+    <script>
+      'use strict';
+      document.addEventListener('WebComponentsReady', () => {
+        let connectToggle = document.querySelector('#connect');
+        let progress = document.querySelector('#progress');
+        let dialog = document.querySelector('#errorDialog');
+        //let picker = document.querySelector('#picker');
+        let pickerButton = document.querySelector('#colorPicker');
+        let activeColorButton = document.querySelector('#color1');
+        let gattServer;
+        let commandService;
+        let writeCharacteristic;
+        let busy = false;
+        let colorChangeListener = null;
+        let currentColor;
+        let commandQueue = [];
+
+        picker.alwaysShowAlpha = false;
+        picker.colorValue = 1;
+        picker.shape = 'huebox';
+        progress.hidden = true;
+
+        /**
+         * Check if browser supports Web Bluetooth API.
+         */
+        if (navigator.bluetooth == undefined) {
+          document.getElementById("no-bluetooth").style.display = "block";
+          document.getElementById("no-bluetooth").open();
+        }
+
+        /**
+         * Set the default display buttons color and hook up click listener.
+         */
+        let button = document.querySelector('#buttonsend');
+        button.addEventListener('click', buttonClicked);
+        
+
+        /**
+         * Display the color picker when the user clicks the picker icon button.
+         */
+          /*
+        pickerButton.addEventListener('click', function(event) {
+          if (colorChangeListener) {
+            picker.removeEventListener('color-as-string-changed', colorChangeListener);
+          }
+          picker.set('immediateColor', colorFromRgb(activeColorButton.style.backgroundColor));
+          picker.addEventListener('color-as-string-changed', colorChangeListener = function() {
+            activeColorButton.style.backgroundColor = colorToHex(picker.color);
+            currentColor.red = picker.color.red;
+            currentColor.green = picker.color.green;
+            currentColor.blue = picker.color.blue;
+            currentColor.alpha = picker.color.alpha;
+          });
+          picker.open();
+        });
+          */
+      
+        /**
+         * Reset the app variable states.
+         */
+        function resetVariables() {
+          busy = false;
+          progress.hidden = true;
+          gattServer = null;
+          commandService = null;
+          writeCharacteristic = null;
+        }
+
+        /**
+         * API error handler.
+         */
+        function handleError(error) {
+          console.log(error);
+          resetVariables();
+          dialog.open();
+        }
+
+        /**
+         * Toggle the active status of the selected color palette button.
+         */
+        function resetOtherPaletteButtons(currentButton) {
+          for(let i=1; i<=2; i++) {
+            let button = document.querySelector('#color'+i);
+            if (button.id != currentButton.id) {
+              button.active = false;
+            }
+          }
+        }
+
+        /**
+         * Set the color of the display button to the currently selected palette color.
+         */
+        function buttonClicked(event) {
+            let msg = document.getElementById("txtmsg").value;
+            console.log(msg);
+            sendCommand(msg);
+          
+        }
+
+       
+
+        /**
+         * Send a command to the device.
+         * See http://wittidesign.com/en/developer/ for API.
+         *
+         * @param cmd The command bytes and associated data.
+         */
+        function sendCommand(cmd) {
+          if (writeCharacteristic) {
+            // Handle one command at a time
+            if (busy) {
+              // Queue commands
+              commandQueue.push(cmd);
+              return Promise.resolve();
+            }
+            busy = true;
+            console.log('CMD1:' + cmd);
+
+            let bytes = []; // char codes
+            
+            for (let i = 0; i < cmd.length; ++i) {
+              let code = cmd.charCodeAt(i);
+              bytes = bytes.concat([code]);
+            }
+
+            cmd = new Uint8Array(bytes);
+                        
+            return writeCharacteristic.writeValue(cmd).then(() => {
+              busy = false;
+              // Get next command from queue
+              let nextCommand = commandQueue.shift();
+              if (nextCommand) {
+                sendCommand(nextCommand);
+              }
+            });
+          } else {
+            return Promise.resolve();
+          }
+        }
+
+                                
+        /**
+         * Connect to command characteristic.
+         */
+        connectToggle.addEventListener('click', () => {
+          if (gattServer != null && gattServer.connected) {
+            if (gattServer.disconnect) {
+              console.log('Disconnecting...');
+              gattServer.disconnect();
+            }
+            resetVariables();
+          } else {
+            console.log('Connecting...');
+            progress.hidden = false;
+            if (writeCharacteristic == null) {
+              navigator.bluetooth.requestDevice({
+                filters: [{
+                  namePrefix: 'BBC micro:bit',
+                }],
+                optionalServices: ['e95dd91d-251d-470a-a062-fa1922dfa9a8'] //LEDSERVICE_SERVICE_UUID
+              })
+              .then(device => {
+                console.log('Connecting to GATT Server...');
+                return device.gatt.connect();
+              })
+              .then(server => {
+                console.log('> Found GATT server');
+                gattServer = server;
+                // Get command service
+                return gattServer.getPrimaryService('e95dd91d-251d-470a-a062-fa1922dfa9a8'); //LEDSERVICE_SERVICE_UUID
+              })
+              .then(service => {
+                console.log('> Found command service');
+                commandService = service;
+                // Get write characteristic
+                //return commandService.getCharacteristic('e95d7b77-251d-470a-a062-fa1922dfa9a8'); //LEDMATRIXSTATE_CHARACTERISTIC_UUID
+                return commandService.getCharacteristic('e95d93ee-251d-470a-a062-fa1922dfa9a8'); //LEDMATRIXSTATE_CHARACTERISTIC_UUID
+              })
+              .then(characteristic => {
+                console.log('> Found write characteristic');
+                console.log(characteristic);
+                writeCharacteristic = characteristic;
+                progress.hidden = true;
+              })
+              .catch(handleError);
+            } else {
+              progress.hidden = true;
+            }
+          }
+        });
+      });
+    </script>
+  
+
+</body></html>

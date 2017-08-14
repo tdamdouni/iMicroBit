@@ -1,0 +1,38 @@
+
+Pi Top
+------
+Red = VCC :: pin 1 = 3V3
+Blue = Gnd :: pin 6 = Gnd 
+Brown = CSN :: pin 24 = GPIO8 (CE0)
+Green = CE :: pin 22 = GPIO 25
+Yellow = MOSI :: pin 21 = MISO
+Orange = SCK :: pin 23 = SCLK
+Purple = MISO :: pin 19 MOSI
+White = IRQ :: pin 18 GPIO 24
+
+
+
+
+
+Black screen
+------------
+Red = VCC :: pin 1 = 3V3
+Blue = Gnd :: pin 6 = Gnd 
+Grey = CSN :: pin 24 = GPIO8 (CE0)
+Green = CE :: pin 22 = GPIO 25
+Yellow = MOSI :: pin 21 = MISO
+Orange = SCK :: pin 23 = SCLK
+Purple = MISO :: pin 19 MOSI
+White = IRQ :: pin 18 GPIO 24
+
+
+
+
+Driver
+------
+
+https://.com/stanleyseow/RF24.git 
+
+- replace sleep with delay
+- Update gettingstarted.cpp with correct port details
+

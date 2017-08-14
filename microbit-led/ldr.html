@@ -1,0 +1,356 @@
+<html>
+  <head>
+    <title>BBC micro:bit LED Display</title>
+    <meta name="description" content="micro:bit with Web Bluetooth.">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+
+    <script src="./web/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+
+    <!-- Polymer components -->
+    <link rel="import" href="./web/bower_components/paper-progress/paper-progress.html">
+    <link rel="import" href="./web/bower_components/paper-button/paper-button.html">
+    <link rel="import" href="./web/bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="./web/bower_components/iron-icons/image-icons.html">
+    <link rel="import" href="./web/bower_components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="./web/bower_components/paper-card/paper-card.html">
+    <link rel="import" href="./web/bower_components/paper-dialog/paper-dialog.html">
+    <link rel="import" href="./web/bower_components/paper-toggle-button/paper-toggle-button.html">
+    <link rel="import" href="./web/bower_components/iron-flex-layout/iron-flex-layout.html">
+
+    <link rel="import" href="./web/bower_components/paper-dialog/paper-dialog.html">
+    <link rel="import" href="./web/bower_components/paper-button/paper-button.html">
+    <link rel="import" href="./web/bower_components/paper-input/paper-input.html">
+
+    <!-- https://github.com/David-Mulder/paper-color-picker -->
+    <!--link rel="import" href="bower_components/paper-color-picker/paper-color-picker.html"-->
+
+    <link rel="import" href="./web/bower_components/paper-styles/color.html">
+    <link rel="stylesheet" href="./web/bower_components/paper-styles/demo.css">
+
+    <style is="custom-style">
+      body {
+        background-color: var(--paper-grey-50);
+      }
+      paper-progress {
+        width: 100%;
+      }
+      paper-progress.blue {
+        paper-progress-active-color: var(--paper-light-blue-500);
+        paper-progress-secondary-color: var(--paper-light-blue-100);
+      }
+      paper-toggle-button.blue {
+        --paper-toggle-button-checked-bar-color:  var(--paper-light-blue-500);
+        --paper-toggle-button-checked-button-color:  var(--paper-light-blue-500);
+        --paper-toggle-button-checked-ink-color: var(--paper-light-blue-500);
+        --paper-toggle-button-unchecked-bar-color:  var(--paper-light-blue-900);
+        --paper-toggle-button-unchecked-button-color:  var(--paper-light-blue-900);
+        --paper-toggle-button-unchecked-ink-color: var(--paper-light-blue-900);
+      }
+      paper-button {
+        display: block;
+        width: 80px;
+        height: 40px;
+        min-width: 0em;
+        margin: 0.2em 0.2em;
+      }
+      paper-button.blue {
+        color: var(--paper-light-blue-500);
+        paper-button-flat-focus-color: var(--paper-light-blue-50);
+      }
+      #cards {
+          margin-left: auto;
+          margin-right: auto;
+          max-width: 400px;
+      }
+      paper-card {
+        margin-bottom: 5px;
+        margin-top: 5px;
+        width: 100%;
+      }
+      .flex {
+        @apply(--layout-horizontal);
+      }
+      paper-button.indigo {
+        background-color: var(--paper-indigo-500);
+        color: white;
+        --paper-button-raised-keyboard-focus: {
+          background-color: var(--paper-pink-a200) !important;
+          color: white !important;
+        };
+      }
+    </style>
+  </head>
+  <body unresolved>
+    <template id="template" is="dom-bind">
+      <div id="cards">
+        <paper-card heading="BBC micro:bit Money Mind :)">
+          <div class="card-content">
+            <paper-toggle-button class="blue" id="connect">Connect</paper-toggle-button>
+            <paper-progress id="progress" indeterminate></paper-progress>
+          </div>
+        </paper-card>
+
+        <paper-card id="header" heading="Insert 5 SGD or 10 SGD note">
+        </paper-card>
+
+        <paper-dialog id="no-bluetooth">
+          <h2>No Web Bluetooth</h2>
+          <p>The Web Bluetooth API is missing. Please enable it at
+          chrome://flags/#enable-web-bluetooth and try again.</p>
+        </paper-dialog>
+
+        <paper-dialog id="errorDialog">
+          <h2>Error</h2>
+          <p>Could not connect to bluetooth device!</p>
+        </paper-dialog>
+      </div>
+    </template>
+
+    <script>
+      'use strict';
+      document.addEventListener('WebComponentsReady', () => {
+        let connectToggle = document.querySelector('#connect');
+        let progress = document.querySelector('#progress');
+        let dialog = document.querySelector('#errorDialog');
+        let gattServer;
+        let commandService;
+        let writeCharacteristicPinAd;
+        let writeCharacteristicPinIO;
+        let writeCharacteristicPinService;
+        let busy = false;
+        let commandQueuePinAd = [];
+        let commandQueuePinIO = [];
+        let commandQueuePinService = [];
+        let connect_status = false;
+        progress.hidden = true;
+
+        /**
+         * Check if browser supports Web Bluetooth API.
+         */
+        if (navigator.bluetooth == undefined) {
+          document.getElementById("no-bluetooth").style.display = "block";
+          document.getElementById("no-bluetooth").open();
+        }
+
+          function initLDR() {
+              //console.log("initLDR");
+
+              /*
+              let adMask = 0;
+              let pin = 1;
+
+              console.log('PIN:' + pin);
+              adMask |= (1 << pin);
+              console.log('pinAnalog:' + adMask);
+     
+     		  adMask = 0
+              adMask &= ~(1 << pin);
+     		  console.log('pinDigital:' + adMask);
+     		  
+     		  adMask = 0
+     		  adMask |= (1 << pin);
+     		  console.log('pinInput:' + adMask);
+
+     		  adMask = 0
+     		  adMask &= ~(1 << pin);
+     		  console.log('pinOutput:' + adMask);
+     		  */
+
+              let cmdPinAd = new Uint32Array([0x02]);     //Configure pin 0 as Analog
+              sendCommandPinAd(cmdPinAd).then(() => {
+                  console.log('Pin AD set.');
+                  let cmdPinIO = new Uint32Array([0x02]); //Configure pin 0 as Input
+                  sendCommandPinIO(cmdPinIO).then(() => {
+                      console.log('Pin IO set.');
+                      connect_status = true;
+                  })
+              });
+          }
+
+   
+       
+
+        /**
+         * Reset the app variable states.
+         */
+        function resetVariables() {
+          busy = false;
+          progress.hidden = true;
+          gattServer = null;
+          commandService = null;
+            writeCharacteristicPinAd = null;
+            writeCharacteristicPinIO = null;
+            writeCharacteristicPinService = null;
+
+        }
+
+        /**
+         * API error handler.
+         */
+        function handleError(error) {
+          console.log(error);
+          resetVariables();
+          dialog.open();
+        }
+
+        function sendCommandPinAd(cmd) {
+          if (writeCharacteristicPinAd) {
+            // Handle one command at a time
+            if (busy) {
+              // Queue commands
+              commandQueuePinAd.push(cmd);
+              return Promise.resolve();
+            }
+            busy = true;
+            
+           
+            return writeCharacteristicPinAd.writeValue(cmd).then(() => {
+            	console.log("write OK");
+              busy = false;
+              // Get next command from queue
+              let nextCommand = commandQueuePinAd.shift();
+              if (nextCommand) {
+                sendCommandPinAd(nextCommand);
+              }
+            });
+          } else {
+            return Promise.resolve();
+          }
+        }
+
+        function sendCommandPinIO(cmd) {
+          if (writeCharacteristicPinIO) {
+            // Handle one command at a time
+            if (busy) {
+              // Queue commands
+              commandQueuePinIO.push(cmd);
+              return Promise.resolve();
+            }
+            busy = true;
+            
+
+            return writeCharacteristicPinIO.writeValue(cmd).then(() => {
+            	console.log("write OK");
+
+              busy = false;
+              // Get next command from queue
+              let nextCommand = commandQueuePinIO.shift();
+              if (nextCommand) {
+                sendCommandPinIO(nextCommand);
+              }
+            });
+          } else {
+            return Promise.resolve();
+          }
+        }
+        function sendCommandPinService(cmd) {
+          if (writeCharacteristicPinService) {
+            // Handle one command at a time
+            if (busy) {
+              // Queue commands
+              commandQueuePinService.push(cmd);
+              return Promise.resolve();
+            }
+            busy = true;
+
+            return writeCharacteristicPinService.writeValue(cmd).then(() => {
+              busy = false;
+              // Get next command from queue
+              let nextCommand = commandQueuePinService.shift();
+              if (nextCommand) {
+                sendCommandPinService(nextCommand);
+              }
+            });
+          } else {
+            return Promise.resolve();
+          }
+        }
+
+         function handleCharacteristicValueChanged(event) {
+    		  let value = event.target.value.getUint8(1);
+    		  console.log(value);
+
+    		  if (value >= 160 && value <=175) {
+    		  	document.getElementById("header").heading = "Yes You got 5 SGD note !! :)";
+    		  } else if(value >=130 && value <=148) {
+    		  	document.getElementById("header").heading = "Yes You got 10 SGD note !! :)";
+    		  } else {
+    		  	document.getElementById("header").heading = "Insert 5 SGD or 10 SGD note";
+    		  }
+   		}
+
+                            
+        /**
+         * Connect to command characteristic.
+         */
+        connectToggle.addEventListener('click', () => {
+          if (gattServer != null && gattServer.connected) {
+            if (gattServer.disconnect) {
+                console.log('Disconnecting...');
+                gattServer.disconnect();
+                connect_status = false;
+            }
+            resetVariables();
+          } else {
+            console.log('Connecting...');
+            progress.hidden = false;
+            if (writeCharacteristicPinAd == null) {
+              navigator.bluetooth.requestDevice({
+                filters: [{
+        			namePrefix: 'BBC micro:bit',
+                }],
+                optionalServices: ['e95d127b-251d-470a-a062-fa1922dfa9a8'] //IOPINSERVICE_SERVICE_UUID
+              })
+              .then(device => {
+                console.log('Connecting to GATT Server...');
+                return device.gatt.connect();
+              })
+              .then(server => {
+                console.log('> Found GATT server');
+                gattServer = server;
+                // Get command service
+                return gattServer.getPrimaryService('e95d127b-251d-470a-a062-fa1922dfa9a8'); //IOPINSERVICE_SERVICE_UUID
+              })
+              .then(service => {
+                console.log('> Found command service');
+                commandService = service;
+                // Get write characteristic
+                return commandService.getCharacteristic('e95d5899-251d-470a-a062-fa1922dfa9a8'); //PINADCONFIGURATION_CHARACTERISTIC_UUID
+              })
+              .then(characteristicPinAd => {
+                console.log('> Found write characteristic for PinAd');
+                writeCharacteristicPinAd = characteristicPinAd;
+                return commandService.getCharacteristic('e95db9fe-251d-470a-a062-fa1922dfa9a8'); //PINIOCONFIGURATION_CHARACTERISTIC_UUID
+              })
+              .then(characteristicPinIO => {
+                console.log('> Found write characteristic for PinIO');
+                writeCharacteristicPinIO = characteristicPinIO;
+                return commandService.getCharacteristic('e95d8d00-251d-470a-a062-fa1922dfa9a8'); //PINDATA_CHARACTERISTIC_UUID
+              })
+              .then(characteristicPinService => {
+                console.log('> Found write characteristic for PinService');
+                writeCharacteristicPinService = characteristicPinService;
+                characteristicPinService.startNotifications();
+                characteristicPinService.addEventListener('characteristicvaluechanged',handleCharacteristicValueChanged);
+                progress.hidden = true;
+                initLDR(); 
+                               
+              })
+              .catch(handleError);
+            }  else {
+              progress.hidden = true;
+            }
+          }
+        });
+
+    
+      });
+    </script>
+  </body>
+</html>

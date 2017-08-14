@@ -1,0 +1,59 @@
+# Add your Python code here. E.g.
+from microbit import *
+
+display.show("H")
+sleep(1000)
+display.clear()
+
+Hours=1
+Mins=0
+Secs=0
+while button_b.is_pressed() == False:
+    if button_a.is_pressed():
+        Hours=Hours+1
+        sleep(100)
+    if Hours>12:
+        Hours=1
+        sleep(100)
+    display.show(str(Hours))
+    sleep(100)
+    
+display.show("M")
+sleep(1000)
+display.clear()
+
+while button_b.is_pressed() == False:
+    if button_a.is_pressed():
+        Mins=Mins+1
+        sleep(100)
+    if Mins>59:
+        Mins=0
+        sleep(100)
+    display.show(str(Mins))
+    sleep(100)
+    
+display.clear()
+
+while True:
+    sleep(1000)
+    Secs=Secs+1
+    if Secs>59:
+        Secs=0
+        Mins=Mins+1
+        sleep(100)
+    if Mins>59:
+        Mins=0
+        Hours=Hours+1
+        sleep(100)
+    if Hours>12:
+        Hours=1
+        sleep(100)
+    Time = [Hours, Mins, Secs,]
+    if button_a.is_pressed():
+        display.show(str(Time[0]))
+        sleep(1000)
+        display.show(str(Time[1]))
+        sleep(1000)
+        display.show(str(Time[2]))
+        
+    

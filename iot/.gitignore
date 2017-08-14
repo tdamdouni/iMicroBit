@@ -1,0 +1,7 @@
+.AppleDouble
+**/.AppleDouble
+DS.Store
+**/DS.Store
+
+# find ./ -depth -name ".DS_Store" -exec rm {} \;
+# find ./ -depth -name ".AppleDouble" -exec rm -Rf {} \;

@@ -1,0 +1,88 @@
+"retro:bit" games I know of, have seen, or would be easy/possible to code...
+ 
+1  snake (Martin)
+ 
+http://www.bobs-stuff.co.uk/images/ub_2_x2.png
+ 
+2  pacman (Damien George from MicroPython)  
+ 
+http://rack.0.mshcdn.com/media/ZgkyMDEyLzEyLzA0LzY0L3BhY21hbi5iMnQuanBnCnAJdGh1bWIJMTIwMHg5NjAwPg/287a8289/7fb/pac-man.jpg
+ 
+3  breakout (on KeyChainino) 
+ 
+http://www.keychainino.com
+ 
+http://www.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/14152/versions/1/screenshot.jpg
+ 
+4  defender (Code Kingdoms)
+ 
+http://www.zx81stuff.org.uk/zx81/screenshots/p/Protector.screen.gif
+ 
+5  tetris (seen this on codebug I think)
+ 
+https://upload.wikimedia.org/wikipedia/en/7/7c/Tetris-VeryFirstVersion.png
+ 
+6 space invaders (I have something similar in my DrWho cybermen game)
+ 
+https://s-media-cache-ak0.pinimg.com/236x/8b/bb/92/8bbb928130ace963b92b90d5edecff2e.jpg
+ 
+http://cdn3.vox-cdn.com/thumbor/qsrzuAG3_BfGT7SiswNi-TANndo=/400x0/cdn1.vox-cdn.com/uploads/chorus_asset/file/4247179/Screen_Shot_2015-11-09_at_12.26.31_PM.0.png
+ 
+7 car racing game (stay on the tracks)
+ 
+https://pbs.twimg.com/media/CJz7CFpUEAAkVJF.png
+ 
+8 pong (microsoft did this)   
+ 
+http://www.80smusiclyrics.com/games/pong/pong2.jpg
+ 
+https://i.ytimg.com/vi/1MraK7VOhjY/maxresdefault.jpg
+ 
+9 juggling game 
+ 
+https://en.wikipedia.org/wiki/Game_%26_Watch
+ 
+10 cylon attack
+ 
+http://cdn2.pcadvisor.co.uk/cmsdata/features/3424656/BBC-4.png
+ 
+11 battleships
+ 
+http://www.handheldmuseum.com/Casio/Casio-Game301.jpg
+ 
+12 towers of hanoi
+ 
+http://regmedia.co.uk/2012/04/19/basic_8.jpg
+ 
+13 conways game of life
+ 
+http://www.math.cornell.edu/~lipa/mec/banner.png
+ 
+14 pick up sticks
+ 
+http://www.doyouremember.co.uk/uploads/raw-1252959413-595x417.jpg
+ 
+15 flappy bird
+ 
+http://cdn.macrumors.com/article-new/2014/02/flappy-bird.jpg?retina
+ 
+16 labyrynth
+ 
+https://img0.etsystatic.com/071/0/9242019/il_570xN.807502004_c085.jpg
+ 
+17 OXO
+ 
+http://plyojump.com/classes/images/computer_history/tictactoe.jpg
+ 
+18 Simon
+ 
+http://www.handheldmuseum.com/MB/MB-PocketSimon.jpg
+ 
+19 scrolling racing game
+ 
+http://hackaday.com/2010/07/11/16-pixel-handheld-gaming/
+ 
+20 make your own game grid
+ 
+http://www.instructables.com/files/deriv/FP5/KIT0/I7IJ9PIM/FP5KIT0I7IJ9PIM.SMALL.jpg
+

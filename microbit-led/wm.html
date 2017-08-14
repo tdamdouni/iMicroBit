@@ -1,0 +1,380 @@
+<html>
+  <head>
+    <title>BBC micro:bit Wash Mashine Alert</title>
+    <meta name="description" content="BBC micro:bit Wash Mashine Alert<.">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+
+    <script src="./web/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+
+    <!-- Polymer components -->
+    <link rel="import" href="./web/bower_components/paper-progress/paper-progress.html">
+    <link rel="import" href="./web/bower_components/paper-button/paper-button.html">
+    <link rel="import" href="./web/bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="./web/bower_components/iron-icons/image-icons.html">
+    <link rel="import" href="./web/bower_components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="./web/bower_components/paper-card/paper-card.html">
+    <link rel="import" href="./web/bower_components/paper-dialog/paper-dialog.html">
+    <link rel="import" href="./web/bower_components/paper-toggle-button/paper-toggle-button.html">
+    <link rel="import" href="./web/bower_components/iron-flex-layout/iron-flex-layout.html">
+
+    <link rel="import" href="./web/bower_components/paper-dialog/paper-dialog.html">
+    <link rel="import" href="./web/bower_components/paper-button/paper-button.html">
+    <link rel="import" href="./web/bower_components/paper-input/paper-input.html">
+
+    <!-- https://github.com/David-Mulder/paper-color-picker -->
+    <!--link rel="import" href="bower_components/paper-color-picker/paper-color-picker.html"-->
+
+    <link rel="import" href="./web/bower_components/paper-styles/color.html">
+    <link rel="stylesheet" href="./web/bower_components/paper-styles/demo.css">
+
+    <style is="custom-style">
+      body {
+        background-color: var(--paper-grey-50);
+      }
+      paper-progress {
+        width: 100%;
+      }
+      paper-progress.blue {
+        paper-progress-active-color: var(--paper-light-blue-500);
+        paper-progress-secondary-color: var(--paper-light-blue-100);
+      }
+      paper-toggle-button.blue {
+        --paper-toggle-button-checked-bar-color:  var(--paper-light-blue-500);
+        --paper-toggle-button-checked-button-color:  var(--paper-light-blue-500);
+        --paper-toggle-button-checked-ink-color: var(--paper-light-blue-500);
+        --paper-toggle-button-unchecked-bar-color:  var(--paper-light-blue-900);
+        --paper-toggle-button-unchecked-button-color:  var(--paper-light-blue-900);
+        --paper-toggle-button-unchecked-ink-color: var(--paper-light-blue-900);
+      }
+      paper-button {
+        display: block;
+        width: 110px;
+        height: 40px;
+        min-width: 0em;
+        margin: 0.2em 0.2em;
+      }
+      paper-button.blue {
+        color: var(--paper-light-blue-500);
+        paper-button-flat-focus-color: var(--paper-light-blue-50);
+      }
+      #cards {
+          margin-left: auto;
+          margin-right: auto;
+          max-width: 400px;
+      }
+      paper-card {
+        margin-bottom: 5px;
+        margin-top: 5px;
+        width: 100%;
+      }
+      .flex {
+        @apply(--layout-horizontal);
+      }
+      paper-button.indigo {
+        background-color: var(--paper-indigo-500);
+        color: white;
+        --paper-button-raised-keyboard-focus: {
+          background-color: var(--paper-pink-a200) !important;
+          color: white !important;
+        };
+      }
+    </style>
+  </head>
+  <body unresolved>
+    <template id="template" is="dom-bind">
+      <div id="cards">
+        <paper-card heading="BBC micro:bit Wash Mashine Alert">
+          <div class="card-content">
+            <paper-toggle-button class="blue" id="connect">Connect</paper-toggle-button>
+            <paper-progress id="progress" indeterminate></paper-progress>
+          </div>
+        </paper-card>
+
+          <paper-card id="header" heading=" ">
+
+      
+        <paper-dialog id="no-bluetooth">
+          <h2>No Web Bluetooth</h2>
+          <p>The Web Bluetooth API is missing. Please enable it at
+          chrome://flags/#enable-web-bluetooth and try again.</p>
+        </paper-dialog>
+
+        <paper-dialog id="errorDialog">
+          <h2>Error</h2>
+          <p>Could not connect to bluetooth device!</p>
+        </paper-dialog>
+      </div>
+    </template>
+
+    <script>
+      'use strict';
+      document.addEventListener('WebComponentsReady', () => {
+        let connectToggle = document.querySelector('#connect');
+        let progress = document.querySelector('#progress');
+        let dialog = document.querySelector('#errorDialog');
+
+        let gattServer;
+        let commandService;
+        let writeCharacteristic;
+        let writeCharacteristicPeriod;
+        let busy = false;
+        let commandQueue = [];
+
+        progress.hidden = true;
+
+        let washcycle = 0
+		let now1 = 0
+		let now = 0
+		let Xold = 0
+		let Yold = 0
+		let movement = false
+		let Xthreshold = 0
+		let Zold = 0
+		let Ythreshold = 0
+		let Zthreshold = 0
+		let timetostop = 0
+		let Ymovement = 0
+		let timetoend = 0
+		let Xmovement = 0
+		let timetostart = 0
+		let Zmovement = 0
+		let advertise = 0 
+
+        /**
+         * Check if browser supports Web Bluetooth API.
+         */
+        if (navigator.bluetooth == undefined) {
+          document.getElementById("no-bluetooth").style.display = "block";
+          document.getElementById("no-bluetooth").open();
+        }
+
+         /**
+         * Set the app variable states.
+         */     
+        function initVariables() {
+        	washcycle = 0
+			now1 = 0
+			now = 0
+			Xold = 0
+			Yold = 0
+			movement = false
+			Xthreshold = 0
+			Zold = 0
+			Ythreshold = 0
+			Zthreshold = 0
+			timetostop = 0
+			Ymovement = 0
+			timetoend = 0
+			Xmovement = 0
+			timetostart = 0
+			Zmovement = 0
+			advertise = 0 
+
+			Zthreshold = 60
+			Ythreshold = 60
+			Xthreshold = 60
+
+			washcycle = 0
+			advertise = 0
+			timetostart = 94
+			timetoend = 8 * 1000 * 60
+			timetostop = 1 * 1000 * 60
+        }
+
+        /**
+         * Reset the app variable states.
+         */
+        function resetVariables() {
+          busy = false;
+          progress.hidden = true;
+          gattServer = null;
+          commandService = null;
+          writeCharacteristic = null;
+          writeCharacteristicPeriod = null;
+          document.getElementById("header").heading = " ";
+          connectToggle.checked = false;
+
+        }
+
+        /**
+         * API error handler.
+         */
+        function handleError(error) {
+          console.log(error);
+          resetVariables();
+          dialog.open();
+        }
+
+
+        function initPeriod() {
+        	 let cmdPinAd = new Uint8Array([0x280]);
+              sendPeriod(cmdPinAd).then(() => {
+                  console.log('Period set.');
+               }).catch(handleError);
+        }
+
+        function sendPeriod(cmd) {
+          if (writeCharacteristicPeriod) {
+            // Handle one command at a time
+            if (busy) {
+              // Queue commands
+              commandQueueP.push(cmd);
+              return Promise.resolve();
+            }
+            busy = true;
+            return writeCharacteristicPeriod.writeValue(cmd).then(() => {
+              busy = false;
+              // Get next command from queue
+              let nextCommand = commandQueue.shift();
+              if (nextCommand) {
+                sendPeriod(nextCommand);
+              }
+            });
+          } else {
+            return Promise.resolve();
+          }
+        }
+
+        function playAlarmStart() {
+        	document.getElementById("header").heading = "Start";
+        }
+
+
+        function playAlarmStop() {
+        	document.getElementById("header").heading = "Stop";
+        }
+
+
+        function handleCharacteristicValueChanged(event) {
+    		Xmovement = event.target.value.getUint16(0)/1000.0;
+    		Ymovement = event.target.value.getUint16(2)/1000.0;
+    		Zmovement = event.target.value.getUint16(4)/1000.0;
+
+
+    		//console.log('x:' + Xmovement + ',y:' + Ymovement + ',z:' + Zmovement);
+
+    		if (Zmovement != Zold) {
+        		if (Zmovement < Zold - Zthreshold || Zmovement > Zold + Zthreshold) {
+            		Zold = Zmovement
+            		movement = true
+        		}
+    		}
+
+    		if (Ymovement != Yold) {
+		        if (Ymovement < Yold - Ythreshold || Ymovement > Yold + Ythreshold) {
+		            Yold = Ymovement
+		            movement = true
+		        }
+		    }
+
+		    if (Xmovement != Xold) {
+		        if (Xmovement < Xold - Xthreshold || Xmovement > Xold + Xthreshold) {
+		            Xold = Xmovement
+		            movement = true
+		        }
+		    }
+
+		    if (movement) {
+		    	movement = false;
+		    	now1 = new Date().getTime();
+		    	console.log(now1 + ' - ' + now);
+
+		    	if (parseInt(now1) > (parseInt(now) + timetostart)) {
+		    		if (washcycle == 0) {
+		                washcycle = 1 // cycle started
+		                if (advertise == 0) {
+		                    advertise = 1
+		                    playAlarmStart();
+		                    console.log('Washing started:' + now1);
+		                }
+		            }
+
+		    	}
+
+		    } else {
+		    	
+		    	now = new Date().getTime();
+		        if (now > (now1 + timetoend)) {
+		            if (washcycle == 1) {
+		                washcycle = 2 //cycle ended
+		            }
+		        }
+		        if (washcycle == 2) {
+		            if (now > now1 + timetostop) {
+		                washcycle = 0 // reset cycle
+		                console.log('Washing stopped:' + now);
+		                playAlarmStop();
+		                advertise = 0
+
+		            }
+		        }
+			}
+  
+    	}
+                                
+        /**
+         * Connect to command characteristic.
+         */
+        connectToggle.addEventListener('click', () => {
+          if (gattServer != null && gattServer.connected) {
+            if (gattServer.disconnect) {
+              //console.log('Disconnecting...');
+              gattServer.disconnect();
+            }
+            resetVariables();
+          } else {
+            //console.log('Connecting...');
+            initVariables();
+            progress.hidden = false;
+            if (writeCharacteristic == null) {
+              navigator.bluetooth.requestDevice({
+                filters: [{
+                  namePrefix: 'BBC micro:bit',
+                }],
+                optionalServices: ['e95d0753-251d-470a-a062-fa1922dfa9a8'] //ACCELEROMETERSERVICE_SERVICE_UUID
+              })
+              .then(device => {
+                //console.log('Connecting to GATT Server...');
+                return device.gatt.connect();
+              })
+              .then(server => {
+                //console.log('> Found GATT server');
+                gattServer = server;
+                //console.log(gattServer);
+                // Get command service
+                return gattServer.getPrimaryService('e95d0753-251d-470a-a062-fa1922dfa9a8'); //ACCELEROMETERSERVICE_SERVICE_UUID
+              })
+              .then(service => {
+                //console.log('> Found command service');
+                commandService = service;
+                return commandService.getCharacteristic('e95dca4b-251d-470a-a062-fa1922dfa9a8'); //ACCELEROMETERDATA_CHARACTERISTIC_UUID
+              })
+               .then(characteristic=> {
+                //console.log('> Found write characteristic');
+                writeCharacteristic = characteristic;
+                writeCharacteristic.startNotifications();
+                writeCharacteristic.addEventListener('characteristicvaluechanged',handleCharacteristicValueChanged);	
+                return commandService.getCharacteristic('e95dfb24-251d-470a-a062-fa1922dfa9a8'); //ACCELEROMETERPERIOD_CHARACTERISTIC_UUID
+              })
+              .then(PeriodCharacteristic => {
+              	writeCharacteristicPeriod = PeriodCharacteristic;
+              	//initPeriod();
+                progress.hidden = true;
+              })
+              .catch(handleError);
+            } else {
+              progress.hidden = true;
+            }
+          }
+        });
+      });
+    </script>
+  
+
+</body></html>
