@@ -1,0 +1,86 @@
+{
+  "_args": [
+    [
+      "bbc-microbit",
+      "/home/fd"
+    ]
+  ],
+  "_from": "bbc-microbit@latest",
+  "_id": "bbc-microbit@0.2.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/bbc-microbit",
+  "_nodeVersion": "4.4.6",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/bbc-microbit-0.2.0.tgz_1491784589868_0.9586024452000856"
+  },
+  "_npmUser": {
+    "email": "sandeep.mistry@gmail.com",
+    "name": "sandeepmistry"
+  },
+  "_npmVersion": "2.15.5",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "bbc-microbit",
+    "raw": "bbc-microbit",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/bbc-microbit/-/bbc-microbit-0.2.0.tgz",
+  "_shasum": "f39ade557d74f02b4516d6b4f0ebaf4f4a2ae326",
+  "_shrinkwrap": null,
+  "_spec": "bbc-microbit",
+  "_where": "/home/fd",
+  "author": {
+    "email": "sandeep.mistry@gmail.com",
+    "name": "Sandeep Mistry"
+  },
+  "bugs": {
+    "url": "https://github.com/sandeepmistry/node-bbc-microbit/issues"
+  },
+  "dependencies": {
+    "noble-device": "^1.4.0"
+  },
+  "description": "Control a BBC micro:bit from Node.js using BLE ",
+  "devDependencies": {
+    "async": "^1.5.2",
+    "jshint": "^2.9.2"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "f39ade557d74f02b4516d6b4f0ebaf4f4a2ae326",
+    "tarball": "https://registry.npmjs.org/bbc-microbit/-/bbc-microbit-0.2.0.tgz"
+  },
+  "gitHead": "8421b98cfdbdc66eafccbe75fda4014588ddda78",
+  "homepage": "https://github.com/sandeepmistry/node-bbc-microbit",
+  "keywords": [
+    "bbc",
+    "micro:bit",
+    "microbit"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "sandeepmistry",
+      "email": "sandeep.mistry@gmail.com"
+    }
+  ],
+  "name": "bbc-microbit",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandeepmistry/node-bbc-microbit.git"
+  },
+  "scripts": {
+    "test": "jshint lib/. examples/. *.js"
+  },
+  "version": "0.2.0"
+}
