@@ -1,0 +1,189 @@
+device.serial: unknown
+device.manufacturer: Apple
+device.version: 11.0
+device.platform: iOS
+device.model: iPhone9,4
+device.cordova: 4.3.1
+showChart
+showResultsHistory: processing results file 0
+showResultsHistory: processing results file 1
+showResultsHistory: updating results file UI list
+showResultsHistory: got results entries (2)
+showResultsHistory: getResultsList success: [object Object],[object Object]
+getResultsList: calling success function with 2 results
+getResultsList: sorting
+getResultsList: selecting result data 0 2017-08-29-17-43-46-492.csv
+getResultsList: Name: 2017-08-29-17-43-46-492.csv
+getResultsList: File: {"isFile":true,"isDirectory":false,"name":"2017-08-29-17-43-46-492.csv","fullPath":"/2017-08-29-17-43-46-492.csv","filesystem":"<filesystem: persistent="">","nativeURL":"file:///var/mobile/Containers/Data/Application/01D2C285-BDAC-4CDA-A1A9-11F834CAF638/Documents/2017-08-29-17-43-46-492.csv"}
+getResultsList: selecting result data 1 2017-08-29-18-43-27-771.csv
+getResultsList: Name: 2017-08-29-18-43-27-771.csv
+getResultsList: File: {"isFile":true,"isDirectory":false,"name":"2017-08-29-18-43-27-771.csv","fullPath":"/2017-08-29-18-43-27-771.csv","filesystem":"<filesystem: persistent="">","nativeURL":"file:///var/mobile/Containers/Data/Application/01D2C285-BDAC-4CDA-A1A9-11F834CAF638/Documents/2017-08-29-18-43-27-771.csv"}
+getResultsList: Name: NoCloud
+getResultsList: File: {"isFile":false,"isDirectory":true,"name":"NoCloud","fullPath":"/NoCloud/","filesystem":"<filesystem: persistent="">","nativeURL":"file:///var/mobile/Containers/Data/Application/01D2C285-BDAC-4CDA-A1A9-11F834CAF638/Documents/NoCloud/"}
+getResultsList: Name: results_meta_data.json.txt
+getResultsList: File: {"isFile":true,"isDirectory":false,"name":"results_meta_data.json.txt","fullPath":"/results_meta_data.json.txt","filesystem":"<filesystem: persistent="">","nativeURL":"file:///var/mobile/Containers/Data/Application/01D2C285-BDAC-4CDA-A1A9-11F834CAF638/Documents/results_meta_data.json.txt"}
+getResultsList: Getting directory reader
+getResultsList: 
+showResultsHistory: getResultsList
+showResultsHistory: got meta_data: {"results":[{"filename":"2017-08-29-17-43-46-492.csv","created":"29/08/2017 at 17:43:46 492","url":"https://transfer.sh/nJrHn/2017-08-29-17-43-46-492.csv","uploaded":"29/08/2017 at 17:44:20 307","project_type":99,"bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":-1.248,"accel_x_max":1.184,"accel_y_min":-1.328,"accel_y_max":1.168,"accel_z_min":-2.048,"accel_z_max":1.44,"ldr_board_datetime":""},{"filename":"2017-08-29-18-43-27-771.csv","created":"29/08/2017 at 18:43:27 771","url":"not uploaded","uploaded":"--/--/---- at --:--:-- ---","project_type":"99","bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":0,"accel_x_max":0.032,"accel_y_min":0,"accel_y_max":1.04,"accel_z_min":-0.112,"accel_z_max":0,"ldr_board_datetime":""}]}
+getResultsMetaData: metadata is: {"results":[{"filename":"2017-08-29-17-43-46-492.csv","created":"29/08/2017 at 17:43:46 492","url":"https://transfer.sh/nJrHn/2017-08-29-17-43-46-492.csv","uploaded":"29/08/2017 at 17:44:20 307","project_type":99,"bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":-1.248,"accel_x_max":1.184,"accel_y_min":-1.328,"accel_y_max":1.168,"accel_z_min":-2.048,"accel_z_max":1.44,"ldr_board_datetime":""},{"filename":"2017-08-29-18-43-27-771.csv","created":"29/08/2017 at 18:43:27 771","url":"not uploaded","uploaded":"--/--/---- at --:--:-- ---","project_type":"99","bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":0,"accel_x_max":0.032,"accel_y_min":0,"accel_y_max":1.04,"accel_z_min":-0.112,"accel_z_max":0,"ldr_board_datetime":""}]}
+getResultsMetaData: metadata fileEntry is file?true
+getResultsMetaData: 
+showStatus: connected
+showChart
+showStatus: Data saved OK
+showStatusTimed: Data saved OK,3000
+saveResults: metadata updated and persisted
+writeFile: writeFile:Successful file write...
+writeFile: writing....
+writeFile: 
+saveResultsMetaData: {"results":[{"filename":"2017-08-29-17-43-46-492.csv","created":"29/08/2017 at 17:43:46 492","url":"https://transfer.sh/nJrHn/2017-08-29-17-43-46-492.csv","uploaded":"29/08/2017 at 17:44:20 307","project_type":99,"bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":-1.248,"accel_x_max":1.184,"accel_y_min":-1.328,"accel_y_max":1.168,"accel_z_min":-2.048,"accel_z_max":1.44,"ldr_board_datetime":""},{"filename":"2017-08-29-18-43-27-771.csv","created":"29/08/2017 at 18:43:27 771","url":"not uploaded","uploaded":"--/--/---- at --:--:-- ---","project_type":"99","bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":0,"accel_x_max":0.032,"accel_y_min":0,"accel_y_max":1.04,"accel_z_min":-0.112,"accel_z_max":0,"ldr_board_datetime":""}]}
+saveResultsMetaData: 
+saveResults: call to saveResultsMetaData
+saveResults: writeFile success
+writeFile: writeFile:Successful file write...
+writeFile: writing....
+saveResults: after writeFile
+writeFile: 
+saveResults: calling writeFile
+Standard Blob constructor used
+saveResults: results_data contains 50386 entries
+saveResults: creating CSV
+saveResults: fileEntry is file? true
+saveResults: creating file 2017-08-29-18-43-27-771.csv
+saveResults: file system open: persistent
+showStatus: Saving data - please wait...
+saveResults:
+speed was calculated OK
+exitExtraData
+stopping notifications and clearing chart timer: e95d9250-251d-470a-a062-fa1922dfa9a8
+stopping notifications and clearing chart timer: e95dfb11-251d-470a-a062-fa1922dfa9a8
+stopping notifications and clearing chart timer: e95dca4b-251d-470a-a062-fa1922dfa9a8
+deactivating data logging
+Enabling temperature notifications
+written temperature period OK
+Starting magnetometer notifications
+written magnetometer period OK
+written accelerometer period OK
+start_time=1504024982734
+TTTT writing temperature period:[object ArrayBuffer]
+TTTT temperature_period_bytes=232,3
+TTTT temperature_period=1000
+Starting temperature notifications
+writing magnetometer period
+magnet_period_bytes=20,0
+Starting magnetometer 3D notifications
+data_source_magnetometer=true,magnetometer_3d=true,magnetometer_bearing=false
+writing accelerometer period
+accel_period_bytes=20,0
+Starting accelerometer notifications
+showStatus: accelerometer data scaled by x100
+showChart
+showResultsHistory: processing results file 0
+showResultsHistory: updating results file UI list
+showResultsHistory: got results entries (1)
+showResultsHistory: getResultsList success: [object Object]
+getResultsList: calling success function with 1 results
+getResultsList: sorting
+getResultsList: selecting result data 0 2017-08-29-17-43-46-492.csv
+getResultsList: Name: 2017-08-29-17-43-46-492.csv
+getResultsList: File: {"isFile":true,"isDirectory":false,"name":"2017-08-29-17-43-46-492.csv","fullPath":"/2017-08-29-17-43-46-492.csv","filesystem":"<filesystem: persistent="">","nativeURL":"file:///var/mobile/Containers/Data/Application/01D2C285-BDAC-4CDA-A1A9-11F834CAF638/Documents/2017-08-29-17-43-46-492.csv"}
+getResultsList: Name: NoCloud
+getResultsList: File: {"isFile":false,"isDirectory":true,"name":"NoCloud","fullPath":"/NoCloud/","filesystem":"<filesystem: persistent="">","nativeURL":"file:///var/mobile/Containers/Data/Application/01D2C285-BDAC-4CDA-A1A9-11F834CAF638/Documents/NoCloud/"}
+getResultsList: Name: results_meta_data.json.txt
+getResultsList: File: {"isFile":true,"isDirectory":false,"name":"results_meta_data.json.txt","fullPath":"/results_meta_data.json.txt","filesystem":"<filesystem: persistent="">","nativeURL":"file:///var/mobile/Containers/Data/Application/01D2C285-BDAC-4CDA-A1A9-11F834CAF638/Documents/results_meta_data.json.txt"}
+getResultsList: Getting directory reader
+getResultsList: 
+showResultsHistory: getResultsList
+showResultsHistory: got meta_data: {"results":[{"filename":"2017-08-29-17-43-46-492.csv","created":"29/08/2017 at 17:43:46 492","url":"https://transfer.sh/nJrHn/2017-08-29-17-43-46-492.csv","uploaded":"29/08/2017 at 17:44:20 307","project_type":99,"bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":-1.248,"accel_x_max":1.184,"accel_y_min":-1.328,"accel_y_max":1.168,"accel_z_min":-2.048,"accel_z_max":1.44,"ldr_board_datetime":""}]}
+getResultsMetaData: metadata is: {"results":[{"filename":"2017-08-29-17-43-46-492.csv","created":"29/08/2017 at 17:43:46 492","url":"https://transfer.sh/nJrHn/2017-08-29-17-43-46-492.csv","uploaded":"29/08/2017 at 17:44:20 307","project_type":99,"bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":-1.248,"accel_x_max":1.184,"accel_y_min":-1.328,"accel_y_max":1.168,"accel_z_min":-2.048,"accel_z_max":1.44,"ldr_board_datetime":""}]}
+getResultsMetaData: metadata fileEntry is file?true
+getResultsMetaData: 
+showChart
+showStatus: connected
+micro:bit does not have the magnetometer calibration characteristic
+connected
+deviceIsMicrobit: device name: [TV] Dionis
+Found {"id":"8E2F4079-4EDE-4A8E-BE47-338E4ACD3B2E","rssi":-96,"advertising":{"kCBAdvDataIsConnectable":true,"kCBAdvDataLocalName":"[TV] Dionis","kCBAdvDataManufacturerData":{}},"name":"[TV] Dionis"}
+deviceIsMicrobit: device name: BBC micro:bit
+Found {"id":"016E04BE-67D4-CA62-C2CD-408B530D9445","rssi":-59,"advertising":{"kCBAdvDataIsConnectable":true,"kCBAdvDataLocalName":"BBC micro:bit"},"name":"BBC micro:bit"}
+deviceIsMicrobit: device name: [TV] UE40J6250
+Found {"id":"6538BB2C-AB80-40F5-9260-EBA1B4D4A896","rssi":-91,"advertising":{"kCBAdvDataIsConnectable":false,"kCBAdvDataManufacturerData":{}},"name":"[TV] UE40J6250"}
+deviceIsMicrobit: device name: [TV] Dionis
+Found {"id":"8E2F4079-4EDE-4A8E-BE47-338E4ACD3B2E","rssi":-94,"advertising":{"kCBAdvDataIsConnectable":true,"kCBAdvDataManufacturerData":{}},"name":"[TV] Dionis"}
+Scanning....
+findMicrobits: Bluetooth is enabled
+fave_address=016E04BE-67D4-CA62-C2CD-408B530D9445,fave_name=BBC micro:bit,fave_nick=taha
+Persisting SCAN_PERIOD=5000
+Listing favourite devices
+showResultsHistory: processing results file 0
+showResultsHistory: updating results file UI list
+showResultsHistory: got results entries (1)
+showResultsHistory: getResultsList success: [object Object]
+getResultsList: calling success function with 1 results
+getResultsList: sorting
+getResultsList: selecting result data 0 2017-08-29-17-43-46-492.csv
+getResultsList: Name: 2017-08-29-17-43-46-492.csv
+getResultsList: File: {"isFile":true,"isDirectory":false,"name":"2017-08-29-17-43-46-492.csv","fullPath":"/2017-08-29-17-43-46-492.csv","filesystem":"<filesystem: persistent="">","nativeURL":"file:///var/mobile/Containers/Data/Application/01D2C285-BDAC-4CDA-A1A9-11F834CAF638/Documents/2017-08-29-17-43-46-492.csv"}
+getResultsList: Name: NoCloud
+getResultsList: File: {"isFile":false,"isDirectory":true,"name":"NoCloud","fullPath":"/NoCloud/","filesystem":"<filesystem: persistent="">","nativeURL":"file:///var/mobile/Containers/Data/Application/01D2C285-BDAC-4CDA-A1A9-11F834CAF638/Documents/NoCloud/"}
+getResultsList: Name: results_meta_data.json.txt
+getResultsList: File: {"isFile":true,"isDirectory":false,"name":"results_meta_data.json.txt","fullPath":"/results_meta_data.json.txt","filesystem":"<filesystem: persistent="">","nativeURL":"file:///var/mobile/Containers/Data/Application/01D2C285-BDAC-4CDA-A1A9-11F834CAF638/Documents/results_meta_data.json.txt"}
+getResultsList: Getting directory reader
+getResultsList: 
+showResultsHistory: getResultsList
+showResultsHistory: got meta_data: {"results":[{"filename":"2017-08-29-17-43-46-492.csv","created":"29/08/2017 at 17:43:46 492","url":"https://transfer.sh/nJrHn/2017-08-29-17-43-46-492.csv","uploaded":"29/08/2017 at 17:44:20 307","project_type":99,"bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":-1.248,"accel_x_max":1.184,"accel_y_min":-1.328,"accel_y_max":1.168,"accel_z_min":-2.048,"accel_z_max":1.44,"ldr_board_datetime":""}]}
+getResultsMetaData: metadata is: {"results":[{"filename":"2017-08-29-17-43-46-492.csv","created":"29/08/2017 at 17:43:46 492","url":"https://transfer.sh/nJrHn/2017-08-29-17-43-46-492.csv","uploaded":"29/08/2017 at 17:44:20 307","project_type":99,"bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":-1.248,"accel_x_max":1.184,"accel_y_min":-1.328,"accel_y_max":1.168,"accel_z_min":-2.048,"accel_z_max":1.44,"ldr_board_datetime":""}]}
+getResultsMetaData: metadata fileEntry is file?true
+getResultsMetaData: 
+exitResultsFile
+this_metadata={"filename":"2017-08-29-17-43-46-492.csv","created":"29/08/2017 at 17:43:46 492","url":"https://transfer.sh/nJrHn/2017-08-29-17-43-46-492.csv","uploaded":"29/08/2017 at 17:44:20 307","project_type":99,"bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":-1.248,"accel_x_max":1.184,"accel_y_min":-1.328,"accel_y_max":1.168,"accel_z_min":-2.048,"accel_z_max":1.44,"ldr_board_datetime":""}
+showResultsHistory: processing results file 0
+showResultsHistory: updating results file UI list
+showResultsHistory: got results entries (1)
+showResultsHistory: getResultsList success: [object Object]
+getResultsList: calling success function with 1 results
+getResultsList: sorting
+getResultsList: selecting result data 0 2017-08-29-17-43-46-492.csv
+getResultsList: Name: 2017-08-29-17-43-46-492.csv
+getResultsList: File: {"isFile":true,"isDirectory":false,"name":"2017-08-29-17-43-46-492.csv","fullPath":"/2017-08-29-17-43-46-492.csv","filesystem":"<filesystem: persistent="">","nativeURL":"file:///var/mobile/Containers/Data/Application/01D2C285-BDAC-4CDA-A1A9-11F834CAF638/Documents/2017-08-29-17-43-46-492.csv"}
+getResultsList: Name: NoCloud
+getResultsList: File: {"isFile":false,"isDirectory":true,"name":"NoCloud","fullPath":"/NoCloud/","filesystem":"<filesystem: persistent="">","nativeURL":"file:///var/mobile/Containers/Data/Application/01D2C285-BDAC-4CDA-A1A9-11F834CAF638/Documents/NoCloud/"}
+getResultsList: Name: results_meta_data.json.txt
+getResultsList: File: {"isFile":true,"isDirectory":false,"name":"results_meta_data.json.txt","fullPath":"/results_meta_data.json.txt","filesystem":"<filesystem: persistent="">","nativeURL":"file:///var/mobile/Containers/Data/Application/01D2C285-BDAC-4CDA-A1A9-11F834CAF638/Documents/results_meta_data.json.txt"}
+getResultsList: Getting directory reader
+getResultsList: 
+showResultsHistory: getResultsList
+showResultsHistory: got meta_data: {"results":[{"filename":"2017-08-29-17-43-46-492.csv","created":"29/08/2017 at 17:43:46 492","url":"https://transfer.sh/nJrHn/2017-08-29-17-43-46-492.csv","uploaded":"29/08/2017 at 17:44:20 307","project_type":99,"bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":-1.248,"accel_x_max":1.184,"accel_y_min":-1.328,"accel_y_max":1.168,"accel_z_min":-2.048,"accel_z_max":1.44,"ldr_board_datetime":""}]}
+getResultsMetaData: metadata is: {"results":[{"filename":"2017-08-29-17-43-46-492.csv","created":"29/08/2017 at 17:43:46 492","url":"https://transfer.sh/nJrHn/2017-08-29-17-43-46-492.csv","uploaded":"29/08/2017 at 17:44:20 307","project_type":99,"bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":-1.248,"accel_x_max":1.184,"accel_y_min":-1.328,"accel_y_max":1.168,"accel_z_min":-2.048,"accel_z_max":1.44,"ldr_board_datetime":""}]}
+getResultsMetaData: metadata fileEntry is file?true
+getResultsMetaData: 
+Got metadata:{"results":[{"filename":"2017-08-29-17-43-46-492.csv","created":"29/08/2017 at 17:43:46 492","url":"https://transfer.sh/nJrHn/2017-08-29-17-43-46-492.csv","uploaded":"29/08/2017 at 17:44:20 307","project_type":99,"bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":-1.248,"accel_x_max":1.184,"accel_y_min":-1.328,"accel_y_max":1.168,"accel_z_min":-2.048,"accel_z_max":1.44,"ldr_board_datetime":""}]}
+getResultsMetaData: metadata is: {"results":[{"filename":"2017-08-29-17-43-46-492.csv","created":"29/08/2017 at 17:43:46 492","url":"https://transfer.sh/nJrHn/2017-08-29-17-43-46-492.csv","uploaded":"29/08/2017 at 17:44:20 307","project_type":99,"bloodhound_token":"","project_name":"My Project","team_name":"My Team","distance":0,"time":0,"speed":"0.00","accel_x_min":-1.248,"accel_x_max":1.184,"accel_y_min":-1.328,"accel_y_max":1.168,"accel_z_min":-2.048,"accel_z_max":1.44,"ldr_board_datetime":""}]}
+getResultsMetaData: metadata fileEntry is file?true
+getResultsMetaData: 
+Got file system OK
+getFileSystem: Root = /
+getFileSystem: file system open: persistent
+cordova.file:[object Object]
+getFileSystem: Requesting access to file system
+restored_scan_period:null
+restored_filter_favourites:null
+favourite_devices:[{"address":"016E04BE-67D4-CA62-C2CD-408B530D9445","name":"BBC micro:bit","nickname":""}]
+restored_temperature__min_change:1
+restored_temperature_polling:null
+setting data_source_temperature from true
+restored_magnetometer_bearing:false
+restored_magnetometer_3d:true
+restored_magnetometer_polling:null
+restored_magnetometer_z:true
+restored_magnetometer_y:true
+restored_magnetometer_x:true
+setting data_source_magnetometer from true
+restored_accelerometer_polling:null
+restored_accelerometer_z:true
+restored_accelerometer_y:true
+restored_accelerometer_x:true
+project_type=99
+Standard Blob constructor is supported
+</filesystem:></filesystem:></filesystem:></filesystem:></filesystem:></filesystem:></filesystem:></filesystem:></filesystem:></filesystem:></filesystem:></filesystem:></filesystem:>
