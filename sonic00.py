@@ -76,8 +76,8 @@ while True:
     if (dist < 15):
     #if (False):
         stop()
-        #display.scroll(str(dist))
-        #sleep(3000)
+        display.scroll(str(dist))
+        sleep(3000)
         reverse(gospeed)
         sleep(800)
         spinRight(gospeed)
