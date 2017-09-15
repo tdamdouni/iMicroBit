@@ -1,6 +1,6 @@
 # Wireless remote data logging with the BBC micro:bit
 
-_Captured: 2017-08-15 at 19:34 from [www.suppertime.co.uk](http://www.suppertime.co.uk/blogmywiki/2016/06/microbit-logger/)_
+_Captured: 2017-08-28 at 11:17 from [www.suppertime.co.uk](http://www.suppertime.co.uk/blogmywiki/2016/06/microbit-logger/)_
 
 I was quite astonished to stumble upon this today - it really is relatively simple to use use the BBC micro:bit to log data remotely, indeed wirelessly.
 
