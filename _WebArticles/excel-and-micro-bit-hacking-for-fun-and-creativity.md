@@ -1,6 +1,6 @@
 # Excel and Micro:Bit - Hacking for fun and creativity!
 
-_Captured: 2017-08-12 at 10:32 from [techcommunity.microsoft.com](https://techcommunity.microsoft.com/t5/Excel-Blog/Excel-and-Micro-Bit-Hacking-for-fun-and-creativity/ba-p/63603)_
+_Captured: 2017-11-16 at 10:31 from [techcommunity.microsoft.com](https://techcommunity.microsoft.com/t5/Excel-Blog/Excel-and-Micro-Bit-Hacking-for-fun-and-creativity/ba-p/63603)_
 
 Hello,
 
@@ -79,6 +79,10 @@ To do that, you'll need to follow the instructions on [this page](https://www.mi
 You will need to configure the right COM port. On my environment, it was configured to COM3. The sample code in Excel assumes that, so if yours is different, you'll need to modify the Excel code later on to reflect the right port.
 
 Once you do that, you should see a stream of data that looks something like this inside your emulator:
+
+![The incoming data flow - light level and acceleration](https://gxcuf89792.i.lithium.com/t5/image/serverpage/image-id/13768i03054CCA134AD00F/image-size/medium?v=1.0&px=400)
+
+> _The incoming data flow - light level and acceleration_
 
 Working? Time to move to the next step!
 
